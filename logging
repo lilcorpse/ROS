@@ -130,7 +130,7 @@ return function (main, ...)
   	local utils = require('utils')
   	
   	local thread = coroutine.create(main)
-  	utils.assertResume(thread, unpack(args))
+  	--utils.assertResume(thread, unpack(args))
   	
   	uv.run()
   end, function(err)
