@@ -18,7 +18,6 @@
 -- more for specific log levels for convenient logging.
 -- @copyright Tim Niemueller, Carnegie Mellon University, Intel Research Pittsburgh
 -- @release Released under BSD license
---lilcorpse: implemented a Node.js style API to fix argument {...} bug
 module("roslua.logging", package.seeall)
 
 DEBUG =  1
@@ -145,29 +144,6 @@ return function (main, ...)
     _G.process.exitCode = -1
     require('pretty-print').stderr:write("Uncaught exception:\n" .. err .. "\n")
   end
-  
-  local function isFileHandle(handle, name, fd)
-  	return _G.process[name].handle == handle and uv.guess_handle(fd) == 'file'
-  end
-  local function isStdioFileHandle(handle)
-  	return isFileHandle(handle, 'stdin', 0) or isFileHandle(handle, 'stdout', 1) or isFileHandle(handle, 'stderr', 2)
-  end
-  --When the loop exits, close all unclosed uv handles (flushing any streams found)
-  uv.walk(function (handle))
-  	if handle then
-  		local function close()
-  			if not handle:is_closing() then handle:close() end
-  		end
-  		if handle.shutdown and not isStdioFileHandle(handle) then
-  			handle:shutdown(close)
-  		else
-  			close()
-  		end
-  	end
-  end
-  uv.run()
-  
-  return _G.process.exitCode
 end
 --- Print formatted to screen only.
 -- Prints a formatted string to screen.
