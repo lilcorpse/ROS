@@ -18,7 +18,6 @@
 -- more for specific log levels for convenient logging.
 -- @copyright Tim Niemueller, Carnegie Mellon University, Intel Research Pittsburgh
 -- @release Released under BSD license
--- lilcorpse: implemented a Node.Js style API to solve arg {...} bug
 module("roslua.logging", package.seeall)
 
 DEBUG =  1
@@ -130,7 +129,7 @@ return function (main, ...)
   	local utils = require('utils')
   	
   	local thread = coroutine.create(main)
-  	--utils.assertResume(thread, unpack(args))
+  	--utils.assertResume(thread, unpack({..)
   	
   	uv.run()
   end, function(err)
